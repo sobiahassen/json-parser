@@ -10,6 +10,7 @@
 (def close-sqr-regex       #"^(\])((.|\n)*)$")
 (def open-curly-regex      #"^(\{)((.|\n)*)$")
 (def close-curly-regex     #"^(\{)((.|\n)*)$")
+(def comma-regex           #"^(,)((.|\n)*)")
 
 ;; parser vector for the value parser
 (def parsers [number-parser string-parser bool-parser]) ;; add array parser and value parser
@@ -43,6 +44,9 @@
 (defn get-null [value]
 	(update value 0 #(symbol %)))
 
+(defn get-comma [value]
+	(update value 0 #(symbol %)))
+
 ;; matcher functions
 
 (def match-number
@@ -57,6 +61,7 @@
 (def match-null
 	(get-match null-regex))
 
+
 ;; basic parsers
 
 (def space-parser
@@ -66,15 +71,17 @@
 	(get-match open-sqr-regex))
 
 (def close-sqr-bkt
-	(get-match close-sqr-regex
+	(get-match close-sqr-regex))
 
 (def open-curly-bkt
-	(get-match open-curly-regex
+	(get-match open-curly-regex))
 
 (def close-curly-bkt
-	(get-match close-curly-regex)
+	(get-match close-curly-regex))
 
-(def comma-parser)
+(def comma-parser
+	(get-match comma-regex))
+
 ;; value parsers
 
 (defn number-parser [input]
